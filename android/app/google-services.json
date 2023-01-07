@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1029283128705",
+    "project_id": "reviewportal-f323d",
+    "storage_bucket": "reviewportal-f323d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029283128705:android:5056b62095856e4cf47480",
+        "android_client_info": {
+          "package_name": "com.reviewportal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029283128705-lqfovk1lnao1drkvvok4uhipj7d2nena.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCThxCNb7E_aof_07E_Un9gWnQectvh8hI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029283128705-lqfovk1lnao1drkvvok4uhipj7d2nena.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
