@@ -1,18 +1,7 @@
-export const textColor = "#121212";
-export const pageBackground = "#ffffff";
-export const white = "#fff";
-export const primaryColor = '#270450';
-export const textColor1 = '#9ca0a5';
-export const textColor2 = '#5d6262';
-export const shadowColor = '#EBEBEB';
-export const textPurple = '#270450';
-export const fadePink = '#FEDBE6';
-export const fadePurple = '#E6DCFF';
-export const lightPurple = '#F1DDFC';
-export const background = '#F5F6F7';
-export const pink = '#fa4a84'
-export const dotColor = '#51125A';
-export const borderColor = '#dcdcee';
-export const success = '#00af3f'; 
-export const purple = '#bb53f2';
-export const switchFalse = '#767577';
+export const colors={
+    primary:'#8F0F0E',
+    white:'#FFFFFF',
+    LIGHT_GREY_06: '#F5F5F7',
+    LIGHT_GREY_07: '#DAE0E6',
+    LIGHT_GREY_08: '#D9DAE2',
+}

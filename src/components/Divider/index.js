@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { textColor, textColor1 } from "../../constants/colors";
+import { colors, textColor, textColor1 } from "../../constants/colors";
 import { width } from "../../constants/dimensions";
 
 const Divider = ({style}) => (
@@ -8,8 +8,8 @@ const Divider = ({style}) => (
     style={{
         height: 0.5,
         opacity: 1,
-        backgroundColor: textColor1,
-        width:width,
+        backgroundColor: colors.LIGHT_GREY_08,
+  
         marginVertical:25,...style
       }
     }

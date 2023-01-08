@@ -9,14 +9,14 @@ export default function Splash({navigation}) {
             setMainSplash(true);
         }, 3000);
         if(mainSplash){
-            navigation.navigate('AppStack');
+            navigation.navigate('Login');
         }
     }, [mainSplash]);
   return (
     <View style={styles.container}>
         <StatusBar backgroundColor={white} barStyle="light-content" />
         <Image 
-            source = {require('../../assets/images/prospa.png')}                         
+            source = {require('../../assets/images/ReviewPortal.png')}                         
             style={styles.logoCover}      
         />
     </View>
