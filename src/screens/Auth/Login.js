@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Linking, Image } from 'react-native';
 import database from '@react-native-firebase/database';
 import { styles } from './styles';
@@ -11,25 +11,29 @@ const LoginForm = ({navigation}) => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [users,setUsers]=useState([]);  
   const [loading,setLoading]=useState(false);
   const reference = database().ref('/users');
-  const handleLogin=()=>{
+  useEffect(()=>{
     reference.on('value',snapshot=>{
-      let user = Object.values(snapshot.val()).filter(item=>item.email.toLowerCase()==username.toLocaleLowerCase() && item.password==password);
-      if(user.length){
-        user=user[0];
-        dispatch({type:Actions.userInfo,payload:user})
-        navigation.navigate('AppStack')
+      let values = snapshot.val();
+      if(values){
+        setUsers(Object.values(values));
       }
-      else{
-        SimpleToast.show("Invalid username or Password")
-      }
-      
-      
-      
     })
-   
+  },[])
+  const handleLogin=()=>{
+    let user = users.filter(item=>item.email.toLowerCase()==username.toLocaleLowerCase() && item.password==password);
+    if(user.length){
+      user=user[0];
+      dispatch({type:Actions.userInfo,payload:user})
+      navigation.navigate('AppStack')
+    }
+    else{
+      SimpleToast.show("Invalid username or Password")
+    }
+      
+    
    
 
 

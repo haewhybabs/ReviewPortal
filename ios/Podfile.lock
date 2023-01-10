@@ -344,12 +344,22 @@ PODS:
     - Firebase/Database (= 10.3.0)
     - React-Core
     - RNFBApp
+  - RNImageCropPicker (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.39.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.39.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
   - RNSVG (12.5.0):
     - React-Core
   - Toast (4.0.0)
+  - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -393,6 +403,7 @@ DEPENDENCIES:
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -409,6 +420,7 @@ SPEC REPOS:
     - libevent
     - PromisesObjC
     - Toast
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   boost:
@@ -487,6 +499,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBDatabase:
     :path: "../node_modules/@react-native-firebase/database"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -542,9 +556,11 @@ SPEC CHECKSUMS:
   RNCPicker: 0bf8ef8f7800524f32d2bb2a8bcadd53eda0ecd1
   RNFBApp: 2b3e57f4eecd9cfe8a5dd2ea8ed27a87fbc6eada
   RNFBDatabase: 3f5b2f3789c5eb0e3bdc8f6c754121416975d563
+  RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSVG: 6adc5c52d2488a476248413064b7f2832e639057
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
 
 PODFILE CHECKSUM: 5ff00147ab4cc349b18c18b647639ba965875081

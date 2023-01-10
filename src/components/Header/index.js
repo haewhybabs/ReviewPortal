@@ -28,5 +28,6 @@ export const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 19,
+    marginRight:10
   },
 });

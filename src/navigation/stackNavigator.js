@@ -1,7 +1,9 @@
 import Home from "../screens/Home";
+import Comments from "../screens/Comments";
 import Splash from '../screens/Splash';
 import Login from '../screens/Auth/Login'
 import Register from '../screens/Auth/Register'
+import Venue from "../screens/Venue";
 
 export const WelcomeStack = 
 [
@@ -24,5 +26,13 @@ export const AppStack =
   {
     screen:Home,
     name:"Home"
+  },
+  {
+    screen:Comments,
+    name:"Comments"
+  },
+  {
+    screen:Venue,
+    name:"Venue"
   },
 ]

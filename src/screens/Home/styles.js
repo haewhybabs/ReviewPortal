@@ -22,4 +22,31 @@ export default StyleSheet.create({
         height: 44,
         borderRadius: 10,
     },
+    bottomWrapper:{
+        justifyContent:'flex-end',
+        alignItems:'flex-end',
+        flex:1,
+        padding:30
+    },
+    bottomModal: {
+        bottom: 0,
+        justifyContent: 'flex-end',
+    },
+    modalWrapper:{
+        backgroundColor:colors.white,
+        borderRadius:10,
+        // marginHorizontal:-20,
+         // marginVertical:-20,
+        padding:20,
+        justifyContent:'center',
+        alignItems:'center'
+       
+
+    },
+    divider:{
+        width:'100%',
+        backgroundColor:colors.DEEP_GREY_04,
+        height:1,
+        marginVertical:10
+    }
 })

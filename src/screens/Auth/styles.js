@@ -6,6 +6,9 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    wrapper:{
+        flex:1,
+    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
