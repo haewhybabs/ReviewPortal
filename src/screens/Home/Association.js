@@ -1,37 +1,86 @@
-import { View, Text,StyleSheet,Image, TouchableOpacity } from 'react-native'
-import React,{useState} from 'react'
+import { View, Text,StyleSheet,Image, TouchableOpacity,FlatList } from 'react-native'
+import React,{useState,useEffect} from 'react'
 import Divider from '../../components/Divider'
 import { colors } from '../../constants/colors'
 import StarRating from 'react-native-star-rating-widget';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-
-export default function Association({navigation}) {
+import database from '@react-native-firebase/database'
+export default function Association({navigation,venues,userInfo}) {
     const [rating,setRating] = useState(3.5)
-  return (
-    <View>
-        <View>
-            <Divider />
-            <View style={styles.wrapper}>
-                
-                <Image source={require('../../assets/images/hotel2.png')} style={styles.venueImage}/>
-                <View style={{marginLeft:10}}>
-                    <Text style={styles.bigText} numberOfLines={1}>Bally Las Vegas</Text>
-                    <Text style={[styles.normalText,{marginTop:10}]} numberOfLines={1}>Hanley Center Iroto</Text>
-                    <Text style={styles.text_002}>status:Pending</Text>
+    // const handleStatusUpdate = (item, status) => {
+    //     const venuesRef = database().ref('venues').orderByChild('id').equalTo(item.id);
+    //     venuesRef.once('value', (snapshot) => {
+    //         snapshot.forEach(function(child) {
+    //             child.ref.update({status});
+    //         });
+    //     });
+       
+    // }
+    const handleStatusUpdate = (item, status) => {
+        const childRef = database().ref('venues').child(item.id);
+        childRef.once('value', (snapshot) => {
+            if(snapshot.val().id === item.id){
+                childRef.update({status});
+            }
+        });
+    }
+
+    const renderContent = ({item}) =>{
+        return(
+            <View>
+                <View>
+                    <Divider />
                     <View style={styles.wrapper}>
-                        <TouchableOpacity style={styles.publishWrapper}>
-                            <Text style={styles.smallBtnText}>Publish</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={[styles.publishWrapper,{}]}>
-                            <Text style={styles.smallBtnText}>Decline</Text>
-                        </TouchableOpacity>
+                        
+                        <Image source={{ uri: item.image }} style={styles.venueImage}/>
+                        <View style={{marginLeft:10}}>
+                            <Text style={styles.bigText} numberOfLines={1}>{item.name}</Text>
+                            <Text style={[styles.normalText,{marginTop:10}]} numberOfLines={1}>{item.location}</Text>
+                            <Text style={styles.text_002}>status {item.status}</Text>
+                            <View style={styles.wrapper}>
+                                {
+                                    item.status=='pending'?
+                                    <>
+                                        <TouchableOpacity style={styles.publishWrapper} onPress={()=>handleStatusUpdate(item,"approved")}>
+                                            <Text style={styles.smallBtnText}>Publish</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[styles.publishWrapper,{}]} onPress={()=>handleStatusUpdate(item,"declined")}>
+                                            <Text style={styles.smallBtnText}>Decline</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                    :
+                                    item.status=='approved'?
+                                    <TouchableOpacity style={styles.publishWrapper} onPress={()=>handleStatusUpdate(item,"declined")}>
+                                        <Text style={styles.smallBtnText}>UnPublish</Text>
+                                    </TouchableOpacity>
+                                    :
+                                    item.status=='declined'?
+                                    <TouchableOpacity style={styles.publishWrapper} onPress={()=>handleStatusUpdate(item,"approved")}>
+                                        <Text style={styles.smallBtnText}>Publish</Text>
+                                    </TouchableOpacity>
+                                    :null
+
+                                }
+                                
+                            </View>
+                            
+                            {/* <Fontisto name="comment" /> */}
+                            <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments',{item})}>View reviews</Text>
+                        </View>        
                     </View>
-                    
-                    {/* <Fontisto name="comment" /> */}
-                    <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments')}>View reviews</Text>
-                </View>        
+                </View>
             </View>
-        </View>
+        )
+    }
+  return (
+    
+
+    <View>
+    <FlatList
+        data={venues}
+        renderItem={renderContent}
+        keyExtractor={item => item.id}
+    />
     </View>
   )
 }

@@ -23,25 +23,52 @@ export default function Home({navigation}) {
   const reference = database().ref('/venues')
 
   useEffect(()=>{
-    reference.on('value', snapshot => {
+    if(userInfo.role=='user'){
+      reference
+      .orderByChild('status')
+      .equalTo("approved")
+      .once('value')
+      .then(snapshot => {
+          const values = snapshot.val();
+          if(values){
+            setVenues(Object.values(values));
+          }
+      });
+      
+    }
+    if(userInfo.role=='admin'){
+      reference
+      .orderByChild('ownerId')
+      .equalTo(userInfo.id)
+      .once('value')
+      .then(snapshot => {
+          const values = snapshot.val();
+          if(values){
+            setVenues(Object.values(values));
+          }
+      });
+    }
+    if(userInfo.role=='association'){
+      reference.on('value', snapshot => {
         let values = snapshot.val();
         if(values){
             setVenues(Object.values(values));
         }
-    });
+      });
+    }
 },[])
 
-const filteredData = venues.filter(item=>item.name.toLowerCase().includes(search.toLowerCase()) || item.location.includes(search.toLowerCase()) || item.description.includes(search.toLowerCase()))
+const filteredData = venues.filter(item=>item?.name.toLowerCase().includes(search.toLowerCase()) || item?.location.includes(search.toLowerCase()) || item?.description.includes(search.toLowerCase()))
 
   const renderDashboard = ()=>{
-    if(userInfo.role=='user'){
+    if(userInfo.role=='user' || userInfo.role=='admin'){
       return (
-        <Reviewer  navigation={navigation} venues={filteredData}/>
+        <Reviewer  navigation={navigation} venues={filteredData} userInfo={userInfo}/>
       )
     }
     if(userInfo.role=='association'){
       return(
-        <Association navigation={navigation} />
+        <Association navigation={navigation} venues={filteredData} userInfo={userInfo}/>
       )
     }
   }

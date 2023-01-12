@@ -7,6 +7,7 @@ import database from '@react-native-firebase/database';
 import RNPickerSelect from 'react-native-picker-select';
 import {useDispatch,useSelector} from 'react-redux';
 import SimpleToast from 'react-native-simple-toast';
+import RNFS from 'react-native-fs';
 const VenuePage = ({navigation}) => {
     const userInfo = useSelector(state => state.stateContent.userInfo);
     const [name, setName] = useState('');
@@ -47,11 +48,35 @@ const VenuePage = ({navigation}) => {
 
     },[])
 
+    const saveImage = (image) => {
+        // Define the path where the image will be saved with timestamp as the image name
+        const imagePath = 'file://' + RNFS.DocumentDirectoryPath + '/image'+Date.now()+'.jpg';
+    
+        // Copy the image file from the specified path to the new location
+        RNFS.copyFile(image.path, imagePath)
+        .then(() => {
+            // Update the state with the new image
+            setImage(imagePath)
+            console.log('Image saved to', imagePath);
+        })
+        .catch((err) => {
+            console.log('Error saving image', err);
+        });
+    }
+    
+    
+    
+    
+   
+    
+    
+    
+
     const selectImage = () => {
         ImagePicker.openPicker({
         multiple: false
         }).then(image => {
-            setImage(image);
+            saveImage(image)
         });
     };
 
@@ -66,11 +91,13 @@ const VenuePage = ({navigation}) => {
             location,
             eventType,
             ownerId:userInfo.role=='association'?ownerSelected:userInfo.id,
-            image:image?.path,
-            id: Math.random().toString(36).substr(2, 9),
-            rating:0
+            image:image,
+            rating:0,
+            status:'pending'
         }
-        venueReference.push(venueData);
+        let newVenue = venueReference.push();
+        venueData.id = newVenue.key;
+        newVenue.set(venueData);
         SimpleToast.show("Venue created successfully")
         setTimeout(()=>{
             navigation.push('Home');
@@ -138,7 +165,7 @@ const VenuePage = ({navigation}) => {
             <View style={styles.imageContainer}>
                 <Button title="Select Event Image" onPress={selectImage} />
                 
-                <Image key={image.path} source={{ uri: image.path }} style={styles.image} />
+                <Image key={image} source={{ uri: image }} style={styles.image} />
                 
             </View>
             

@@ -28,6 +28,8 @@ const Register = ({navigation}) => {
         setUsers(Object.values(snapshot.val()))    
       }
     });
+    // return () => database().ref('/users').off('value', reference);
+
   },[])
 
   
@@ -45,15 +47,15 @@ const Register = ({navigation}) => {
       email,
       password,
       role:userType,
-      id: Math.random().toString(36).substr(2, 9)
     } 
     let checkUser = users.filter(item=>item.email.toLowerCase()==email.toLowerCase())  
     if(checkUser.length){
       setLoading(false);
       return SimpleToast.show('user already exist');
-
     }
-    reference.push(userData);
+    let newUser = reference.push();
+    userData.id = newUser.key;
+    newUser.set(userData)
     dispatch({type:Actions.userInfo,payload:userData})
     setLoading(false);
     navigation.navigate('AppStack')

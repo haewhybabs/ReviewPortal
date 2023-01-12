@@ -15,31 +15,29 @@ const LoginForm = ({navigation}) => {
   const [loading,setLoading]=useState(false);
   const reference = database().ref('/users');
   useEffect(()=>{
-    reference.on('value',snapshot=>{
-      let values = snapshot.val();
-      if(values){
-        setUsers(Object.values(values));
-      }
-    })
   },[])
+  let usersRef;
   const handleLogin=()=>{
-    let user = users.filter(item=>item.email.toLowerCase()==username.toLocaleLowerCase() && item.password==password);
-    if(user.length){
-      user=user[0];
-      dispatch({type:Actions.userInfo,payload:user})
-      navigation.navigate('AppStack')
-    }
-    else{
-      SimpleToast.show("Invalid username or Password")
-    }
-      
-    
-   
-
-
-    
+    usersRef = database().ref('users').orderByChild('email').equalTo(username);
+    usersRef.once('value', snapshot => {
+      if (snapshot.exists()) {
+        snapshot.forEach(userSnapshot => {
+            if (userSnapshot.val().password === password) {
+              const user = userSnapshot.val();
+              dispatch({type:Actions.userInfo,payload:user})
+              stopListening();
+              navigation.navigate('AppStack')
+            }
+        });
+      } else {
+        stopListening();
+        SimpleToast.show("Invalid username or Password")
+      }
+    });    
   }
-  
+  const stopListening = () => {
+    usersRef.off();
+  }
 
   return (
     <View style={styles.container}>

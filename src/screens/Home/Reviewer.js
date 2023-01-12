@@ -6,7 +6,7 @@ import StarRating from 'react-native-star-rating-widget';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import database from '@react-native-firebase/database'
 
-export default function Reviewer({navigation,venues}) {
+export default function Reviewer({navigation,venues,userInfo}) {
     const renderContent = ({item}) =>{
         return(
             <View>
@@ -16,7 +16,12 @@ export default function Reviewer({navigation,venues}) {
                     <View style={{marginLeft:10}}>
                         <Text style={styles.bigText} numberOfLines={1}>{item.name}</Text>
                         <Text style={[styles.normalText,{marginTop:5}]} numberOfLines={1}>{item.location}</Text>
-                        {/* <Text style={[styles.normalText,{marginTop:5}]} numberOfLines={1}>{item.eventType}</Text> */}
+                        {
+                            userInfo.role=='admin'?
+                            <Text style={[styles.normalText,{marginTop:5,fontSize:10}]} numberOfLines={1}>status: {item.status}</Text>
+                            :null
+                        }
+                        {/*  */}
                         <View style={{marginTop:10}}>
                             <StarRating
                                 rating={item.rating}
@@ -27,7 +32,7 @@ export default function Reviewer({navigation,venues}) {
                             />
                         </View>
                         {/* <Fontisto name="comment" /> */}
-                        <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments',{item})}>Drop a review</Text>
+                        <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments',{item})}>{userInfo.role=='admin'?'View reviews':'Drop a review'}</Text>
                     </View>
                     {/* <View style={{marginLeft:-10}}>
                         <Fontisto name="heart-alt" size={22} />
@@ -39,8 +44,6 @@ export default function Reviewer({navigation,venues}) {
     }
   return (
     <View>
-        
-
         <FlatList
             data={venues}
             renderItem={renderContent}
@@ -58,7 +61,7 @@ const styles= StyleSheet.create({
         flexDirection:'row'
     },
     venueImage:{
-        height:130,
+        height:140,
         width:120,
         // resizeMode:"contain"
     },

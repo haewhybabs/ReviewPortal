@@ -25,8 +25,9 @@ export default StyleSheet.create({
     bottomWrapper:{
         justifyContent:'flex-end',
         alignItems:'flex-end',
-        flex:1,
-        padding:30
+        paddingBottom:20,
+        paddingRight:30,
+        flex:1
     },
     bottomModal: {
         bottom: 0,
