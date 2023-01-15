@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView,FlatList } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux';
 import Header from '../../components/Header';
@@ -12,13 +12,14 @@ import Modal from 'react-native-modal';
 import Divider from '../../components/Divider';
 import * as Actions from '../../store/actions';
 import database from '@react-native-firebase/database'
+import Loader from '../../components/Loader';
 
 export default function Home({navigation}) {
   const dispatch = useDispatch();
   const userInfo = useSelector(state => state.stateContent.userInfo);
   const [search,setSearch]=useState("")
   const [showOption,setShowOption]=useState(false);
-  const [loading,SetLoading]=useState(true);
+  const [loading,setLoading]=useState(true);
   const [venues,setVenues] = useState([]);
   const reference = database().ref('/venues')
 
@@ -33,6 +34,7 @@ export default function Home({navigation}) {
           if(values){
             setVenues(Object.values(values));
           }
+          setLoading(false)
       });
       
     }
@@ -46,6 +48,7 @@ export default function Home({navigation}) {
           if(values){
             setVenues(Object.values(values));
           }
+          setLoading(false)
       });
     }
     if(userInfo.role=='association'){
@@ -54,21 +57,22 @@ export default function Home({navigation}) {
         if(values){
             setVenues(Object.values(values));
         }
+        setLoading(false)
       });
     }
 },[])
 
 const filteredData = venues.filter(item=>item?.name.toLowerCase().includes(search.toLowerCase()) || item?.location.includes(search.toLowerCase()) || item?.description.includes(search.toLowerCase()))
 
-  const renderDashboard = ()=>{
+  const renderDashboard = (item)=>{
     if(userInfo.role=='user' || userInfo.role=='admin'){
       return (
-        <Reviewer  navigation={navigation} venues={filteredData} userInfo={userInfo}/>
+        <Reviewer  navigation={navigation} item={item} userInfo={userInfo}/>
       )
     }
     if(userInfo.role=='association'){
       return(
-        <Association navigation={navigation} venues={filteredData} userInfo={userInfo}/>
+        <Association navigation={navigation} item={item} userInfo={userInfo}/>
       )
     }
   }
@@ -76,21 +80,37 @@ const filteredData = venues.filter(item=>item?.name.toLowerCase().includes(searc
   return (
     <View style={styles.container}>
       <Header title={userInfo.role=='association'?'All Venues': userInfo.role=='admin'?'My Venues':'Venues'} noBack/>
-
-      <View style={styles.searchWrapper}>
+      <View style={[styles.searchWrapper,{paddingBottom:0}]}>
         <SimpleSearch
           value={search}
           wrapperStyle={styles.searchInputWrapper}
           onChangeText={val => setSearch(val)}
           placeholderStyle={styles.searchPlaceholderStyle}
         />
-        {
-          renderDashboard()
-        }
       </View>
+      <ScrollView>
+        <View style={[styles.searchWrapper]}>
+          {
+            loading?<Loader />:null
+          }
+          <View>
+            {
+              filteredData.map((item,index)=>(
+                <View key={index}>
+                  {
+                    renderDashboard(item)
+                  }
+                </View>
+              ))
+            }
+            
+          </View>
+          
+        </View>
+      </ScrollView>
       <View style={styles.bottomWrapper}>
-        <MaterialCommunityIcon name="plus-circle" size={50} color={colors.primary} onPress={()=>setShowOption(true)}/>
-      </View>
+          <MaterialCommunityIcon name="plus-circle" size={50} color={colors.primary} onPress={()=>setShowOption(true)}/>
+        </View>
       <Modal isVisible={showOption} style={styles.bottomModal} onBackdropPress={()=>setShowOption(false)}>
         <View style={styles.modalWrapper}>
           {

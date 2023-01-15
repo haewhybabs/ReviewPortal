@@ -23,11 +23,11 @@ export default StyleSheet.create({
         borderRadius: 10,
     },
     bottomWrapper:{
-        justifyContent:'flex-end',
+        // justifyContent:'flex-end',
         alignItems:'flex-end',
         paddingBottom:20,
         paddingRight:30,
-        flex:1
+        // flex:1
     },
     bottomModal: {
         bottom: 0,

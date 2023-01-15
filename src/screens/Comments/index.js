@@ -180,7 +180,7 @@ const ReviewPage = ({navigation,route}) => {
                       commentToReply?.response?
                       Object.values(commentToReply?.response).map((value,index)=>(
                         <View style={{marginBottom:10,marginLeft:10}}>
-                          <Text style={{fontWeight:'bold'}}>{item.name} - {value?.created_at.split('G')[0]}</Text>
+                          <Text style={{fontWeight:'bold'}}>{value.userInfo.role=='admin'?item.name:value.userInfo.name} - {value?.created_at.split('G')[0]}</Text>
                           <Text style={{marginTop:2}}> {value.response}</Text>
                         </View>
                       ))

@@ -3,52 +3,38 @@ import React,{useState,useEffect} from 'react'
 import Divider from '../../components/Divider'
 import { colors } from '../../constants/colors'
 import StarRating from 'react-native-star-rating-widget';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import database from '@react-native-firebase/database'
 
-export default function Reviewer({navigation,venues,userInfo}) {
-    const renderContent = ({item}) =>{
-        return(
-            <View>
-                <Divider />
-                <View style={styles.wrapper}>
-                    <Image  source={{ uri: item.image }} style={styles.venueImage}/>
-                    <View style={{marginLeft:10}}>
-                        <Text style={styles.bigText} numberOfLines={1}>{item.name}</Text>
-                        <Text style={[styles.normalText,{marginTop:5}]} numberOfLines={1}>{item.location}</Text>
-                        {
-                            userInfo.role=='admin'?
-                            <Text style={[styles.normalText,{marginTop:5,fontSize:10}]} numberOfLines={1}>status: {item.status}</Text>
-                            :null
-                        }
-                        {/*  */}
-                        <View style={{marginTop:10}}>
-                            <StarRating
-                                rating={item.rating}
-                                onChange={()=>null}
-                                maxStars={5}
-                                color={colors.primary}
-                                
-                            />
-                        </View>
-                        {/* <Fontisto name="comment" /> */}
-                        <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments',{item})}>{userInfo.role=='admin'?'View reviews':'Drop a review'}</Text>
-                    </View>
-                    {/* <View style={{marginLeft:-10}}>
-                        <Fontisto name="heart-alt" size={22} />
-                    </View> */}
-                </View>
-            </View>
-        )
-
-    }
+export default function Reviewer({navigation,item,userInfo}) {
   return (
     <View>
-        <FlatList
-            data={venues}
-            renderItem={renderContent}
-            keyExtractor={item => item.id}
-        />
+        <Divider />
+        <View style={styles.wrapper}>
+            <Image  source={{ uri: item.image }} style={styles.venueImage}/>
+            <View style={{marginLeft:10}}>
+                <Text style={styles.bigText} numberOfLines={1}>{item.name}</Text>
+                <Text style={[styles.normalText,{marginTop:5}]} numberOfLines={1}>{item.location}</Text>
+                {
+                    userInfo.role=='admin'?
+                    <Text style={[styles.normalText,{marginTop:5,fontSize:10}]} numberOfLines={1}>status: {item.status}</Text>
+                    :null
+                }
+                {/*  */}
+                <View style={{marginTop:10}}>
+                    <StarRating
+                        rating={item.rating}
+                        onChange={()=>null}
+                        maxStars={5}
+                        color={colors.primary}
+                        
+                    />
+                </View>
+                {/* <Fontisto name="comment" /> */}
+                <Text style={{marginTop:20,color:colors.primary}} onPress={()=>navigation.navigate('Comments',{item})}>{userInfo.role=='admin'?'View reviews':'Drop a review'}</Text>
+            </View>
+            {/* <View style={{marginLeft:-10}}>
+                <Fontisto name="heart-alt" size={22} />
+            </View> */}
+        </View>
     </View>
   )
 }

@@ -48,37 +48,22 @@ const VenuePage = ({navigation}) => {
 
     },[])
 
-    const saveImage = (image) => {
-        // Define the path where the image will be saved with timestamp as the image name
-        const imagePath = 'file://' + RNFS.DocumentDirectoryPath + '/image'+Date.now()+'.jpg';
-    
-        // Copy the image file from the specified path to the new location
-        RNFS.copyFile(image.path, imagePath)
-        .then(() => {
-            // Update the state with the new image
-            setImage(imagePath)
-            console.log('Image saved to', imagePath);
-        })
-        .catch((err) => {
-            console.log('Error saving image', err);
-        });
-    }
-    
-    
-    
-    
-   
-    
-    
-    
-
     const selectImage = () => {
         ImagePicker.openPicker({
-        multiple: false
+          multiple: false
         }).then(image => {
-            saveImage(image)
+          RNFS.readFile(image.path, 'base64')
+          .then(base64String => {
+            console.log('image',base64String)
+            setImage(`data:image/jpeg;base64,${base64String}`);
+          })
+          .catch((err) => {
+            console.log('Error converting image to base64', err);
+          });
         });
     };
+    
+
 
     const handleSubmit = ()=>{
         if(!name || !description || !location || !eventType || !image){
